@@ -33,7 +33,9 @@ function CabinTable() {
     isLoading,
     data: cabins,
     error,
-  } = useQuery(['cabins'], getCabins, {
+  } = useQuery({
+    queryKey: ['cabins'],
+    queryFn: getCabins,
     staleTime: 0,
   });
   console.log(isLoading, cabins, error);
