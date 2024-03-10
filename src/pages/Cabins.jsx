@@ -11,7 +11,7 @@ function Cabins() {
 
   return (
     <>
-      <Row type="horizontal">
+      <Row>
         <Heading as="h1">All cabins</Heading>
         <p>Filter / Sort</p>
       </Row>
