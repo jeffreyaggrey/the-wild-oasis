@@ -1,20 +1,19 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-hot-toast';
+import { useForm } from 'react-hook-form';
+import { createCabin } from '../../services/apiCabins';
 
 import Input from '../../ui/Input';
 import Form from '../../ui/Form';
 import Button from '../../ui/Button';
 import FileInput from '../../ui/FileInput';
 import Textarea from '../../ui/Textarea';
-import { useForm } from 'react-hook-form';
-import { createCabin } from '../../services/apiCabins';
 import FormRow from '../../ui/FormRow';
 
 function CreateCabinForm() {
   const queryClient = useQueryClient();
   const { register, handleSubmit, reset, getValues, formState } = useForm();
   const { errors } = formState;
-  console.log(errors);
 
   const { mutate, isLoading: isCreating } = useMutation({
     mutationFn: createCabin,
@@ -29,10 +28,11 @@ function CreateCabinForm() {
   });
 
   function onSubmit(data) {
-    mutate(data);
+    mutate({ ...data, image: data.image[0] });
   }
 
   function onError(errors) {
+    // This is a good place to log errors to a service like Sentry
     // console.error(errors);
   }
 
@@ -86,6 +86,7 @@ function CreateCabinForm() {
           defaultValue={0}
           {...register('discount', {
             required: 'This field is required',
+            // Custom validation to ensure discount is not higher than regular price
             validate: value =>
               value <= getValues().regularPrice ||
               'Discount cannot be higher than regular price',
@@ -107,7 +108,14 @@ function CreateCabinForm() {
       </FormRow>
 
       <FormRow label="Cabin photo">
-        <FileInput id="image" accept="image/*" disabled={isCreating} />
+        <FileInput
+          id="image"
+          accept="image/*"
+          {...register('image', {
+            required: 'This field is required',
+          })}
+          disabled={isCreating}
+        />
       </FormRow>
 
       <FormRow>
