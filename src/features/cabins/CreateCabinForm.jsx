@@ -1,5 +1,3 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { toast } from 'react-hot-toast';
 import { useForm } from 'react-hook-form';
 
 import Input from '../../ui/Input';
@@ -9,44 +7,20 @@ import FileInput from '../../ui/FileInput';
 import Textarea from '../../ui/Textarea';
 import FormRow from '../../ui/FormRow';
 
-import { createEditCabin } from '../../services/apiCabins';
+import { useCreateCabin } from './useCreateCabin';
+import { useEditCabin } from './useEditCabin';
 
 function CreateEditCabinForm({ cabinToEdit = {} }) {
   const { id: editId, ...editValues } = cabinToEdit;
   const isEditSession = Boolean(editId);
 
-  // Use query client to invalidate the cabins query after creating or editing a cabin
-  const queryClient = useQueryClient();
-
-  const { register, handleSubmit, reset, getValues, formState } = useForm({
+  const { register, handleSubmit, getValues, reset, formState } = useForm({
     defaultValues: isEditSession ? editValues : {},
   });
   const { errors } = formState;
 
-  const { mutate: createCabin, isLoading: isCreating } = useMutation({
-    mutationFn: createEditCabin,
-    onSuccess: () => {
-      toast.success('Cabin successfully added');
-      queryClient.invalidateQueries(['cabins']);
-      reset();
-    },
-    onError: err => {
-      toast.error(err.message);
-    },
-  });
-
-  const { mutate: editCabin, isLoading: isEditting } = useMutation({
-    mutationFn: ({ edittedCabinData, id }) =>
-      createEditCabin(edittedCabinData, id),
-    onSuccess: () => {
-      toast.success('Cabin successfully updated');
-      queryClient.invalidateQueries(['cabins']);
-      reset();
-    },
-    onError: err => {
-      toast.error(err.message);
-    },
-  });
+  const { isCreating, createCabin } = useCreateCabin();
+  const { isEditting, editCabin } = useEditCabin();
 
   const isWorking = isCreating || isEditting;
 
@@ -54,13 +28,16 @@ function CreateEditCabinForm({ cabinToEdit = {} }) {
     const image = typeof data.image === 'string' ? data.image : data.image[0];
 
     if (isEditSession)
-      editCabin({ edittedCabinData: { ...data, image }, id: editId });
-    else createCabin({ ...data, image });
+      editCabin(
+        { edittedCabinData: { ...data, image }, id: editId },
+        { onSuccess: () => reset() },
+      );
+    else createCabin({ ...data, image }, { onSuccess: () => reset() });
   }
 
   function onError(errors) {
     // This is a good place to log errors to a service like Sentry
-    // console.error(errors);
+    console.error(errors);
   }
 
   return (
@@ -114,7 +91,7 @@ function CreateEditCabinForm({ cabinToEdit = {} }) {
           {...register('discount', {
             required: 'This field is required',
             validate: value =>
-              value <= getValues().regularPrice ||
+              Number(value) <= Number(getValues().regularPrice) ||
               'Discount cannot be higher than regular price',
           })}
           disabled={isWorking}
@@ -123,7 +100,7 @@ function CreateEditCabinForm({ cabinToEdit = {} }) {
 
       <FormRow label="Description" error={errors?.description?.message}>
         <Textarea
-          type="number"
+          type="text"
           id="description"
           defaultValue=""
           {...register('description', {
