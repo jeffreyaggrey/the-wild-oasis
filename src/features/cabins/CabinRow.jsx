@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import styled from 'styled-components';
 import { HiDuplicate, HiPencil, HiTrash } from 'react-icons/hi';
-import CreateCabinForm from './CreateCabinForm';
+import CreateUpdateCabinForm from './CreateUpdateCabinForm';
 
 import { formatCurrency } from '../../utils/helpers';
 import { useDeleteCabin } from './useDeleteCabin';
@@ -100,7 +100,7 @@ function CabinRow({ cabin }) {
           </button>
         </div>
       </TableRow>
-      {showForm && <CreateCabinForm cabinToEdit={cabin} />}
+      {showForm && <CreateUpdateCabinForm cabinToEdit={cabin} />}
     </>
   );
 }

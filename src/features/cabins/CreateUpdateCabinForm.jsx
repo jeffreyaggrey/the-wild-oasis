@@ -8,26 +8,26 @@ import Textarea from '../../ui/Textarea';
 import FormRow from '../../ui/FormRow';
 
 import { useCreateCabin } from './useCreateCabin';
-import { useEditCabin } from './useEditCabin';
+import { useUpdateCabin } from './useUpdateCabin';
 
-function CreateEditCabinForm({ cabinToEdit = {} }) {
+function CreateUpdateCabinForm({ cabinToEdit = {} }) {
   const { id: editId, ...editValues } = cabinToEdit;
-  const isEditSession = Boolean(editId);
+  const isUpdateSession = Boolean(editId);
 
   const { register, handleSubmit, getValues, reset, formState } = useForm({
-    defaultValues: isEditSession ? editValues : {},
+    defaultValues: isUpdateSession ? editValues : {},
   });
   const { errors } = formState;
 
   const { isCreating, createCabin } = useCreateCabin();
-  const { isEditting, editCabin } = useEditCabin();
+  const { isUpdating, editCabin } = useUpdateCabin();
 
-  const isWorking = isCreating || isEditting;
+  const isWorking = isCreating || isUpdating;
 
   function onSubmit(data) {
     const image = typeof data.image === 'string' ? data.image : data.image[0];
 
-    if (isEditSession)
+    if (isUpdateSession)
       editCabin(
         { edittedCabinData: { ...data, image }, id: editId },
         { onSuccess: () => reset() },
@@ -115,7 +115,7 @@ function CreateEditCabinForm({ cabinToEdit = {} }) {
           id="image"
           accept="image/*"
           {...register('image', {
-            required: isEditSession ? false : 'This field is required',
+            required: isUpdateSession ? false : 'This field is required',
           })}
           disabled={isWorking}
         />
@@ -127,11 +127,11 @@ function CreateEditCabinForm({ cabinToEdit = {} }) {
           Cancel
         </Button>
         <Button disabled={isWorking}>
-          {!isEditSession ? 'Add cabin' : 'Update Cabin'}
+          {!isUpdateSession ? 'Add cabin' : 'Update Cabin'}
         </Button>
       </FormRow>
     </Form>
   );
 }
 
-export default CreateEditCabinForm;
+export default CreateUpdateCabinForm;
