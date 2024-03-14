@@ -20,7 +20,6 @@ function UpdateSettingsForm() {
   const { isUpdating, updateSetting } = useUpdateSetting();
 
   function handleUpdateSetting(e) {
-    console.log(e);
     const { value, id, defaultValue } = e.target;
 
     if (!value || !id || defaultValue === value) return;

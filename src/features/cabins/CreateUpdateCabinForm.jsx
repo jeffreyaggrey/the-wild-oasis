@@ -20,7 +20,7 @@ function CreateUpdateCabinForm({ cabinToEdit = {} }) {
   const { errors } = formState;
 
   const { isCreating, createCabin } = useCreateCabin();
-  const { isUpdating, editCabin } = useUpdateCabin();
+  const { isUpdating, updateCabin } = useUpdateCabin();
 
   const isWorking = isCreating || isUpdating;
 
@@ -28,8 +28,8 @@ function CreateUpdateCabinForm({ cabinToEdit = {} }) {
     const image = typeof data.image === 'string' ? data.image : data.image[0];
 
     if (isUpdateSession)
-      editCabin(
-        { edittedCabinData: { ...data, image }, id: editId },
+      updateCabin(
+        { updatedCabinData: { ...data, image }, id: editId },
         { onSuccess: () => reset() },
       );
     else createCabin({ ...data, image }, { onSuccess: () => reset() });
