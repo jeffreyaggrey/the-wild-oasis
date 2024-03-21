@@ -1,7 +1,7 @@
 import { useSearchParams } from 'react-router-dom';
 import Select from './Select';
 
-function SortyBy({ options }) {
+function SortBy({ options }) {
   const [searchParams, setSearchParams] = useSearchParams();
   const sortBy = searchParams.get('sort') || '';
 
@@ -20,4 +20,4 @@ function SortyBy({ options }) {
   );
 }
 
-export default SortyBy;
+export default SortBy;
