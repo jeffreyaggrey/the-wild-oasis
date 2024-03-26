@@ -3,14 +3,14 @@ import { useState } from 'react';
 import Button from '../../ui/Button';
 import Form from '../../ui/Form';
 import Input from '../../ui/Input';
-import FormRowVertical from '../../ui/FormRowVertical';
 import SpinnerMini from '../../ui/SpinnerMini';
+import FormRowVertical from '../../ui/FormRowVertical';
 
 import { useLogin } from './useLogin';
 
 function LoginForm() {
-  const [email, setEmail] = useState('jeffrey@example.com');
-  const [password, setPassword] = useState('pass1234');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const { login, isLoading } = useLogin();
 
   function handleSubmit(e) {
