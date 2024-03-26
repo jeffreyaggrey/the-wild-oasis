@@ -1,14 +1,16 @@
 import styled from 'styled-components';
+
 import { HiDuplicate, HiPencil, HiTrash } from 'react-icons/hi';
 import CreateUpdateCabinForm from './CreateUpdateCabinForm';
-
-import { formatCurrency } from '../../utils/helpers';
-import { useDeleteCabin } from './useDeleteCabin';
-import { useCreateCabin } from './useCreateCabin';
 import Modal from '../../ui/Modal';
 import ConfirmDelete from '../../ui/ConfirmDelete';
 import Table from '../../ui/Table';
 import Menus from '../../ui/Menus';
+
+import { useDeleteCabin } from './useDeleteCabin';
+import { useCreateCabin } from './useCreateCabin';
+
+import { formatCurrency } from '../../utils/helpers';
 
 // const TableRow = styled.div`
 //   display: grid;
