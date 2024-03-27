@@ -9,8 +9,8 @@ import FormRowVertical from '../../ui/FormRowVertical';
 import { useLogin } from './useLogin';
 
 function LoginForm() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('jeffrey@example.com');
+  const [password, setPassword] = useState('pass1234');
   const { login, isLoading } = useLogin();
 
   function handleSubmit(e) {
@@ -18,7 +18,15 @@ function LoginForm() {
 
     if (!email || !password) return;
 
-    login({ email, password });
+    login(
+      { email, password },
+      {
+        onSettled: () => {
+          setEmail('');
+          setPassword('');
+        },
+      },
+    );
   }
 
   return (
