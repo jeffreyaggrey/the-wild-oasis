@@ -13,10 +13,10 @@ export function useRecencBookings() {
 
   const queryDate = subDays(new Date(), numDays).toISOString();
 
-  const { isLoading, data: bookings } = useQuery({
+  const { isLoading: isLoadingBookings, data: bookings } = useQuery({
     queryKey: ['bookings', `last-${numDays}`],
     queryFn: () => getBookingsAfterDate(queryDate),
   });
 
-  return { isLoading, bookings };
+  return { isLoadingBookings, bookings };
 }
