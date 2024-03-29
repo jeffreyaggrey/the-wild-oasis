@@ -11,7 +11,9 @@ import { formatCurrency } from '../../utils/helpers';
 function Stats({ bookings, confirmedStays, numDays, cabinCount }) {
   const numBookings = bookings.length;
   const sales = bookings.reduce((acc, cur) => acc + cur.totalPrice, 0);
-  const checkins = confirmedStays.length;
+  const checkins = confirmedStays.filter(
+    stay => stay.status === 'checked-in',
+  ).length;
 
   // occupancyRate = occupiedNights / availabe
   // available = (numDays * numCabins)
