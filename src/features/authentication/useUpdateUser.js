@@ -6,15 +6,16 @@ import { updateCurrentUser } from '../../services/apiAuth';
 export function useUpdateUser() {
   const queryClient = useQueryClient();
 
-  console.log(queryClient);
-
   const { mutate: updateUser, isLoading: isUpdating } = useMutation({
     mutationFn: ({ fullName, password, avatar }) =>
       updateCurrentUser({ fullName, password, avatar }),
     onSuccess: user => {
       toast.success('User account successfully updated');
-      queryClient.setQueryData('user', user);
-      queryClient.invalidateQueries({ queryKey: ['user'] });
+      // Update cache with updated User or
+      queryClient.setQueryData(['user'], user);
+
+      // Invalidate the cache - which fetches latest changes
+      // queryClient.invalidateQueries({ queryKey: ['user'] });
     },
     onError: error => {
       toast.error(error.message);
