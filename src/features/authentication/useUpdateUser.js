@@ -6,6 +6,8 @@ import { updateCurrentUser } from '../../services/apiAuth';
 export function useUpdateUser() {
   const queryClient = useQueryClient();
 
+  console.log(queryClient);
+
   const { mutate: updateUser, isLoading: isUpdating } = useMutation({
     mutationFn: ({ fullName, password, avatar }) =>
       updateCurrentUser({ fullName, password, avatar }),
