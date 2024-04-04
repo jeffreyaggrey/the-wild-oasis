@@ -9,6 +9,7 @@ import {
   Tooltip,
 } from 'recharts';
 import Heading from '../../ui/Heading';
+
 import { useDarkMode } from '../../context/DarkMode/useDarkMode';
 
 const ChartBox = styled.div`

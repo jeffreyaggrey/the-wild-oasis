@@ -8,6 +8,7 @@ import DurationChart from './DurationChart';
 import { useRecencBookings } from './useRecentBookings';
 import { useRecencStays } from './useRecentStays';
 import { useCabins } from '../cabins/useCabins';
+import TodayActivity from '../check-in-out/TodayActivity';
 
 const StyledDashboardLayout = styled.div`
   display: grid;
@@ -18,7 +19,7 @@ const StyledDashboardLayout = styled.div`
 
 function DashboardLayout() {
   const { bookings, isLoadingBookings } = useRecencBookings();
-  const { stays, confirmedStays, isLoadingStays, numDays } = useRecencStays();
+  const { confirmedStays, isLoadingStays, numDays } = useRecencStays();
   const { cabins, isLoading: isLoadingCabins } = useCabins();
 
   if (isLoadingBookings || isLoadingStays || isLoadingCabins)
@@ -32,7 +33,7 @@ function DashboardLayout() {
         numDays={numDays}
         cabinCount={cabins.length}
       />
-      <div>{`Today's activity`}</div>
+      <TodayActivity />
       <DurationChart confirmedStays={confirmedStays} />
       <SalesChart bookings={bookings} numOfDays={numDays} />
     </StyledDashboardLayout>
