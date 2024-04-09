@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 
-export function useOutsideClick(handler, listenCapture = true) {
+export function useOutsideClick(handler, listenCapturing = true) {
   const ref = useRef();
 
   useEffect(
@@ -11,12 +11,12 @@ export function useOutsideClick(handler, listenCapture = true) {
         }
       }
 
-      document.addEventListener('click', handleClick, listenCapture);
+      document.addEventListener('click', handleClick, listenCapturing);
 
       return () =>
-        document.removeEventListener('click', handleClick, listenCapture);
+        document.removeEventListener('click', handleClick, listenCapturing);
     },
-    [handler, listenCapture],
+    [handler, listenCapturing],
   );
 
   return ref;
